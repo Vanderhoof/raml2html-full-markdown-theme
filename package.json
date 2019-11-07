@@ -1,6 +1,6 @@
 {
   "name": "raml2html-full-markdown-theme",
-  "description": "A raml2html template for converting RAML to Markdown",
+  "description": "A raml2html theme for converting RAML to Markdown",
   "version": "1.0.3",
   "author": {
     "name": "Daniel Minukhin",
