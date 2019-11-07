@@ -1,16 +1,33 @@
 {% if (resource.methods or (resource.description and resource.parentUrl)) %}
   {% for method in resource.methods %}
 
+  {% if method.displayName %}
+# {{ method.displayName }}
+  {% elif resource.displayName %}
+# {{ resource.displayName + " " + method.method }}
+  {% else %}
 # {{ (method.method | upper )}} {{ resource.parentUrl }}{{ resource.relativeUri }}
+  {% endif %}
 
-> **CURL EXAMPLE**
+  {%- if method.securedBy %} *(secured)*
+  {% endif %}
+
+{{ method.description }}
+
+HTTP verb: `{{ (method.method | upper )}}`
+
+Resource: `{{ resource.parentUrl }}{{ resource.relativeUri }}`
+
+## Request
+
+**Example**
 
 ```bash
 {{ getCurlStatement(method, resource) }}
 ```
 
     {% if ((method.headers | length != 0) and hasExamples(method.headers)) %}
-> REQUEST HEADERS
+**Headers**
 
 ```
       {%- for header in method.headers -%}
@@ -24,12 +41,12 @@
     {% if (method.body | length != 0) %}
       {% for body in method.body %}
         {% if hasExamples(method.body) %}
-> REQUEST BODY
+**Body**
           {% for example in body.examples %}
-> **{{ example.displayName }}**
+**{{ example.displayName }}**
             {% if (example.description) %}
 
-> {{ example.description }}
+{{ example.description }}
 
             {% endif %}
 
@@ -41,45 +58,8 @@
       {% endfor %}
     {% endif %}
 
-    {% set responseHeaders = getResponseHeaders(method) %}
-    {% if ((responseHeaders | length != 0) and hasExamples(responseHeaders)) %}
-
-> RESPONSE HEADERS
-
-      {%- for header in responseHeaders -%}
-        {%- if header.examples -%}
-> `{{ header.key }}: {{ header.examples[0].value }}`
-        {% endif -%}
-      {%- endfor -%}
-
-    {% endif %}
-
-    {% for response in method.responses %}
-      {% if (response.code >= 200 and response.code < 300) %}
-        {% for body in response.body %}
-          {% if hasExamples(response.body) %}
-> RESPONSE BODY
-            {% for example in body.examples %}
-> {{ example.displayName }} *{{ response.code }}*
-              {% if (example.description) %}
-> {{ example.description }}
-              {% endif %}
-```{{ getLanguage(body.key) }}
-{{ example.value }}
-```
-            {% endfor %}
-          {% endif %}
-        {% endfor %}
-      {% endif %}
-    {% endfor %}
-
-    {% if method.displayName and method.displayName != resource.parentUrl+resource.relativeUri %}
-**{{ method.displayName }}**
-    {%- endif %}
-    {%- if method.securedBy %} *(secured)*
-    {% endif %}
-{{ method.description }}
     {% if method.allUriParameters | length != 0 %}
+
 ***URI Parameters***
 
 | Name | Type | Required | Description |
@@ -109,29 +89,59 @@
       {%- endfor %}
     {% endif %}
 
-    {% if getResponseHeaders(method) | length != 0 %}
-***Response Headers***
+    {% if ((method.responses | length) != 0 ) or (responseHeaders | length != 0) %}
+## Response
+
+      {% set responseHeaders = getResponseHeaders(method) %}
+      {% if (responseHeaders | length != 0) %}
+
+**Response Headers**
+
+        {%- for header in responseHeaders -%}
+          {%- if header.examples -%}
+> `{{ header.key }}: {{ header.examples[0].value }}`
+          {% endif -%}
+        {%- endfor -%}
 
 | Name | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
-      {%- for param in getResponseHeaders(method) -%}
+        {%- for param in responseHeaders -%}
 {% include "./param-table.nunjucks" %}
-      {%- endfor %}
-    {% endif %}
+        {%- endfor %}
+      {% endif %}
 
-    {% if (method.responses | length) != 0 %}
+      {% if (method.responses | length) != 0 %}
 
-***Responses***
+**Responses**
+
+      {% for response in method.responses %}
+        {% if (response.code >= 200 and response.code < 300) %}
+          {% for body in response.body %}
+            {% if hasExamples(response.body) %}
+*Body*
+              {% for example in body.examples %}
+{{ example.displayName }} *{{ response.code }}*
+                {% if (example.description) %}
+{{ example.description }}
+                {% endif %}
+```{{ getLanguage(body.key) }}
+{{ example.value }}
+```
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
 
 | Status | Response model | Description |
 | ------ | -------------- | ----------- |
-      {%- for response in method.responses %}
+        {%- for response in method.responses %}
 | {{ response.code }} |
-        {%- for body in response.body %} [{{ body.rawType.name }}](#{{ getSafeId(body.rawType.name) }})
-        {%- endfor %} | {{ response.description }}
-      {%- endfor %}
+          {%- for body in response.body %} [{{ body.rawType.name }}](#{{ getSafeId(body.rawType.name) }})
+          {%- endfor %} | {{ response.description }}
+        {%- endfor %}
+      {% endif %}
     {% endif %}
-
   {%- endfor -%}
 {% endif %}
 

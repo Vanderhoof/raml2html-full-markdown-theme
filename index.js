@@ -17,7 +17,7 @@ const defaultTemplatesDir = path.join(__dirname, 'templates')
 /**
  * Cleans up Markdown string from trailing spaces and excessive line breaks.
  * @param  {string}  input A Markdown string
- * @return {string}  A cleaned up Markdown string
+ * @return {string}        A cleaned up Markdown string
  */
 function cleanupMarkdown(input) {
   const trailingSpaces = / +\n/g
