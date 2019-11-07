@@ -34,7 +34,7 @@ On the command line:
 ```bash
 raml2html \
 --theme 'raml2html-full-markdown-theme' \
--o 'path/to/output/file.html' \
+-o 'path/to/output/file.md' \
 -i 'path/to/raml/file.raml' \
 --template-dir 'templates'
 ```

@@ -5,7 +5,7 @@
   "author": {
     "name": "Daniel Minukhin",
     "email": "ddddsa@gmail.com"
-    },
+  },
   "bugs": {
     "url": "https://github.com/Vanderhoof/raml2html-full-markdown-theme/issues"
   },
@@ -32,8 +32,5 @@
   ],
   "engines": {
     "node": ">=6"
-  },
-  "eslintConfig": {
-    "extends": "standard"
   }
 }
