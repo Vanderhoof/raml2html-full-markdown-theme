@@ -1,0 +1,50 @@
+{% set typeDefinitions = getTypeDefinitions() %}
+
+{% if typeDefinitions | length != 0 %}
+# Types
+  {% for type in typeDefinitions %}
+
+## {{ type.displayName }}
+
+> **TYPE DEFINITION**
+
+```json
+{{ type.content }}
+```
+
+{{ type.description }}
+
+**Parent type:** {{ type.type }}
+
+    {% if type.enum | length != 0 %}
+**Possible values:**
+      {%- for val in type.enum -%}
+{% set comma = joiner() %}
+{{ comma() }} `{{val}}`
+      {% endfor %}
+    {% endif %}
+
+
+    {% if type.properties | length != 0 %}
+
+***Properties***
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+      {%- for key, param in type.properties %}
+{% include "./param-table.nunjucks" %}
+      {%- endfor %}
+    {% endif %}
+
+
+    {% if type.examples %}
+
+> **TYPE EXAMPLE**
+
+```json
+{{ type.examples[0].value }}
+```
+
+    {% endif %}
+  {% endfor %}
+{% endif %}

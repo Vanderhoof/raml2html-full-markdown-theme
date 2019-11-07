@@ -1,0 +1,39 @@
+{
+  "name": "raml2html-full-markdown-theme",
+  "description": "A raml2html template for converting RAML to Markdown",
+  "version": "1.0.2",
+  "author": {
+    "name": "Daniel Minukhin",
+    "email": "ddddsa@gmail.com"
+    },
+  "bugs": {
+    "url": "https://github.com/Vanderhoof/raml2html-full-markdown-theme/issues"
+  },
+  "dependencies": {
+    "nunjucks": "^3.2.0"
+  },
+  "homepage": "https://github.com/Vanderhoof/raml2html-full-markdown-theme",
+  "keywords": [
+    "RAML",
+    "raml2html-theme",
+    "Markdown"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vanderhoof/raml2html-full-markdown-theme"
+  },
+  "preferGlobal": true,
+  "files": [
+    "index.js",
+    "lib",
+    "templates"
+  ],
+  "engines": {
+    "node": ">=6"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  }
+}

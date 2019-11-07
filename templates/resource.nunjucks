@@ -1,0 +1,140 @@
+{% if (resource.methods or (resource.description and resource.parentUrl)) %}
+  {% for method in resource.methods %}
+
+# {{ (method.method | upper )}} {{ resource.parentUrl }}{{ resource.relativeUri }}
+
+> **CURL EXAMPLE**
+
+```bash
+{{ getCurlStatement(method, resource) }}
+```
+
+    {% if ((method.headers | length != 0) and hasExamples(method.headers)) %}
+> REQUEST HEADERS
+
+```
+      {%- for header in method.headers -%}
+        {%- if header.examples -%}
+> {{ header.key }}: {{ header.examples[0].value }}
+        {% endif -%}
+      {%- endfor -%}
+```
+    {% endif %}
+
+    {% if (method.body | length != 0) %}
+      {% for body in method.body %}
+        {% if hasExamples(method.body) %}
+> REQUEST BODY
+          {% for example in body.examples %}
+> **{{ example.displayName }}**
+            {% if (example.description) %}
+
+> {{ example.description }}
+
+            {% endif %}
+
+```
+{{ example.value }}
+```
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% set responseHeaders = getResponseHeaders(method) %}
+    {% if ((responseHeaders | length != 0) and hasExamples(responseHeaders)) %}
+
+> RESPONSE HEADERS
+
+      {%- for header in responseHeaders -%}
+        {%- if header.examples -%}
+> `{{ header.key }}: {{ header.examples[0].value }}`
+        {% endif -%}
+      {%- endfor -%}
+
+    {% endif %}
+
+    {% for response in method.responses %}
+      {% if (response.code >= 200 and response.code < 300) %}
+        {% for body in response.body %}
+          {% if hasExamples(response.body) %}
+> RESPONSE BODY
+            {% for example in body.examples %}
+> {{ example.displayName }} *{{ response.code }}*
+              {% if (example.description) %}
+> {{ example.description }}
+              {% endif %}
+```{{ getLanguage(body.key) }}
+{{ example.value }}
+```
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+
+    {% if method.displayName and method.displayName != resource.parentUrl+resource.relativeUri %}
+**{{ method.displayName }}**
+    {%- endif %}
+    {%- if method.securedBy %} *(secured)*
+    {% endif %}
+{{ method.description }}
+    {% if method.allUriParameters | length != 0 %}
+***URI Parameters***
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+      {%- for param in method.allUriParameters %}
+{% include "./param-table.nunjucks" %}
+      {%- endfor %}
+    {% endif %}
+
+    {% if (method.headers | length) != 0 %}
+***Header Parameters***
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+      {%- for param in method.headers %}
+{% include "./param-table.nunjucks" %}
+      {%- endfor %}
+    {% endif %}
+
+    {% if (method.queryParameters | length) != 0 %}
+***Query Parameters***
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+      {%- for param in method.queryParameters %}
+{% include "./param-table.nunjucks" %}
+      {%- endfor %}
+    {% endif %}
+
+    {% if getResponseHeaders(method) | length != 0 %}
+***Response Headers***
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+      {%- for param in getResponseHeaders(method) -%}
+{% include "./param-table.nunjucks" %}
+      {%- endfor %}
+    {% endif %}
+
+    {% if (method.responses | length) != 0 %}
+
+***Responses***
+
+| Status | Response model | Description |
+| ------ | -------------- | ----------- |
+      {%- for response in method.responses %}
+| {{ response.code }} |
+        {%- for body in response.body %} [{{ body.rawType.name }}](#{{ getSafeId(body.rawType.name) }})
+        {%- endfor %} | {{ response.description }}
+      {%- endfor %}
+    {% endif %}
+
+  {%- endfor -%}
+{% endif %}
+
+{% for resource in resource.resources %}
+{% include "./resource.nunjucks" %}
+{% endfor %}
