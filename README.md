@@ -5,7 +5,7 @@
 This package provides a theme for [raml2html](https://github.com/raml2html/raml2html). It is meant to render a Markdown documentation for your REST API, based on a RAML file.
 The theme is based on the code of [raml2html-slate-theme](https://github.com/wdullaer/raml2html-slate-theme).
 
-The theme supports customizable templates. The default template is most suitable to use with [Slate](https://github.com/slatedocs/slate). You can also find some alternative templates in the **alternative_templates** folder.
+The theme supports customizable templates. The default template is most suitable to use with [Slate](https://github.com/slatedocs/slate). You can also find some alternative templates in the **alternative_templates** folder. You will need to copy them into your project directory and use `template-dir` option.
 
 The theme is called **full** Markdown theme because it includes much more fields from the RAML specification than the original [raml2html-markdown-theme](https://www.npmjs.com/package/raml2html-markdown-theme).
 

@@ -1,7 +1,7 @@
 {
   "name": "raml2html-full-markdown-theme",
   "description": "A raml2html theme for converting RAML to Markdown",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": {
     "name": "Daniel Minukhin",
     "email": "ddddsa@gmail.com"

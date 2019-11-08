@@ -22,7 +22,9 @@ const defaultTemplatesDir = path.join(__dirname, 'templates')
 function cleanupMarkdown(input) {
   const trailingSpaces = / +\n/g
   const excessiveNewLines = /\n{3,}/g
-
+  if (!input) {
+    return input
+  }
   var result = input.replace(trailingSpaces, '\n')
   result = result.replace(excessiveNewLines, '\n\n')
   return result

@@ -21,7 +21,7 @@
 
     {% if type.properties | length != 0 %}
 
-***Properties***
+**Properties**
 
 | Name | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
