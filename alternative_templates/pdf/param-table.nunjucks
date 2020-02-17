@@ -9,5 +9,5 @@
 {%- if param.format -%} **Format:** {{param.format}}. {% endif -%}
 {{ param.description }}
 {%- if param.examples -%}**Examples:** {% for example in param.examples -%}
-{%- set comma = joiner() %}{{ comma() }} `{{ example }}`
+{%- set comma = joiner() %}{{ comma() }} `{{ example.value }}`
 {%- endfor %}. {% endif %}
