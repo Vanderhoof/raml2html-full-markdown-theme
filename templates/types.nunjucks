@@ -6,7 +6,7 @@
 
 ## {{ type.displayName }}
 
-> **TYPE DEFINITION** 
+> **TYPE DEFINITION**
 
 ```json
 {{ type.content }}
