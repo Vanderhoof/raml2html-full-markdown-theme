@@ -6,6 +6,12 @@
 
 ## {{ type.displayName }}
 
+> **TYPE DEFINITION** 
+
+```json 
+{{ type.content }}  
+``` 
+
 {{ type.description }}
 
 **Parent type:** {{ type.type }} {{ "of [**" + type.items.name + "**](#" + type.items.name + ")" if type.type == 'array' and type.items.name != undefined }}
