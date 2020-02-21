@@ -8,9 +8,9 @@
 
 > **TYPE DEFINITION** 
 
-```json 
-{{ type.content }}  
-``` 
+```json
+{{ type.content }}
+```
 
 {{ type.description }}
 
