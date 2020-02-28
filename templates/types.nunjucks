@@ -14,7 +14,7 @@
 
 {{ type.description }}
 
-**Parent type:** {{ type.type }}
+**Parent type:** {{ type.type }} {{ "of [**" + type.items.name + "**](#" + type.items.name + ")" if type.type == 'array' and type.items.name != undefined }}
 
     {% if type.enum | length != 0 %}
 **Possible values:**
